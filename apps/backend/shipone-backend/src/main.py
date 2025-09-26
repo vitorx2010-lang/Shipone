@@ -8,9 +8,12 @@ from flask_cors import CORS
 from src.models.user import db
 from src.models.auth import Auth
 from src.models.logistics import Shipment, TrackingEvent, Route
+from src.models.analytics import PredictiveModel, DeliveryPrediction, RouteOptimization, PerformanceMetric
 from src.routes.user import user_bp
 from src.routes.auth import auth_bp
 from src.routes.logistics import logistics_bp
+from src.routes.analytics import analytics_bp
+from src.routes.notifications import notifications_bp
 
 app = Flask(__name__, static_folder=os.path.join(os.path.dirname(__file__), 'static'))
 app.config['SECRET_KEY'] = 'asdf#FGSgvasgf$5$WGT'
@@ -22,6 +25,8 @@ CORS(app)
 app.register_blueprint(user_bp, url_prefix='/api')
 app.register_blueprint(auth_bp, url_prefix='/api/auth')
 app.register_blueprint(logistics_bp, url_prefix='/api/logistics')
+app.register_blueprint(analytics_bp, url_prefix='/api/analytics')
+app.register_blueprint(notifications_bp, url_prefix='/api/notifications')
 
 # Configuração do banco de dados
 app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(os.path.dirname(__file__), 'database', 'app.db')}"
@@ -53,7 +58,14 @@ def health_check():
     return {
         'status': 'healthy',
         'message': 'ShipOne API is running',
-        'version': '1.0.0'
+        'version': '2.0.0',
+        'features': [
+            'authentication',
+            'logistics_management',
+            'predictive_analytics',
+            'route_optimization',
+            'notifications'
+        ]
     }, 200
 
 if __name__ == '__main__':
