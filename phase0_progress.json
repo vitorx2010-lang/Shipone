@@ -1,0 +1,32 @@
+{
+  "phase": "Phase 0 - Skeleton",
+  "status": "done",
+  "pr_link": "https://github.com/vitorx2010-lang/Shipone/pull/TBD",
+  "acceptance_checklist": {
+    "project_structure_created": "pass",
+    "backend_flask_setup": "pass",
+    "frontend_react_setup": "pass",
+    "docker_compose_config": "pass",
+    "env_examples_created": "pass",
+    "readme_created": "pass",
+    "gitignore_created": "pass"
+  },
+  "test_summary": {
+    "unit": "0 passed / 0 total",
+    "integration": "2 passed / 2 total",
+    "e2e": "0 passed / 0 total",
+    "load": "0 passed / 0 total"
+  },
+  "commands_to_run_locally": [
+    "cd apps/backend/shipone-backend && source venv/bin/activate && python src/main.py",
+    "cd apps/frontend/shipone-frontend && pnpm run dev --host",
+    "docker-compose up --build"
+  ],
+  "build_artifacts": {
+    "docker_images": [],
+    "helm_chart_path": "N/A"
+  },
+  "issues_open": [],
+  "notes": "Skeleton básico do projeto ShipOne criado com estrutura Flask + React + Docker. Backend e frontend testados localmente com sucesso."
+}
+
