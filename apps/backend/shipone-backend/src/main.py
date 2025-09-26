@@ -4,18 +4,30 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 from flask import Flask, send_from_directory
+from flask_cors import CORS
 from src.models.user import db
+from src.models.auth import Auth
+from src.models.logistics import Shipment, TrackingEvent, Route
 from src.routes.user import user_bp
+from src.routes.auth import auth_bp
+from src.routes.logistics import logistics_bp
 
 app = Flask(__name__, static_folder=os.path.join(os.path.dirname(__file__), 'static'))
 app.config['SECRET_KEY'] = 'asdf#FGSgvasgf$5$WGT'
 
-app.register_blueprint(user_bp, url_prefix='/api')
+# Habilitar CORS para todas as rotas
+CORS(app)
 
-# uncomment if you need to use database
+# Registrar blueprints
+app.register_blueprint(user_bp, url_prefix='/api')
+app.register_blueprint(auth_bp, url_prefix='/api/auth')
+app.register_blueprint(logistics_bp, url_prefix='/api/logistics')
+
+# Configuração do banco de dados
 app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(os.path.dirname(__file__), 'database', 'app.db')}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
+
 with app.app_context():
     db.create_all()
 
@@ -35,6 +47,14 @@ def serve(path):
         else:
             return "index.html not found", 404
 
+@app.route('/api/health', methods=['GET'])
+def health_check():
+    """Endpoint de verificação de saúde da API"""
+    return {
+        'status': 'healthy',
+        'message': 'ShipOne API is running',
+        'version': '1.0.0'
+    }, 200
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
